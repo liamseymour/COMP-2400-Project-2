@@ -1,4 +1,4 @@
-/*******************************
+/*************************************************************************
  *
  *  Project Name: Project 2: One Time, One Time
  *  Description: Encrypt and decrypt using a modified one time pad method.
@@ -6,7 +6,7 @@
  *  Date: 2/14/2020   
  *  Authors: Bryce Hessler, Lucia-Maria Ristea and Liam Seymour
  *
- *******************************/
+ ************************************************************************/
 
 #include <stdio.h>
 
@@ -40,7 +40,7 @@ void printbin(char c)
 	size_t csize = sizeof(c) * 8; /* size of c in bits */
 	char mask = 1 << (csize - 1);
 
-	for (int i =0; i < csize; ++i) {
+	for (int i = 0; i < csize; ++i) {
 		if ((c & mask) == 0) {
 			putchar('0');
 		} else {
