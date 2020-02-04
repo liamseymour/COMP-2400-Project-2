@@ -11,25 +11,37 @@
 #include <stdio.h>
 #define MESSAGE_LENGTH 2048
 
-void printbin(unsigned char c);
+void printbin(unsigned char c); // TEMP
 unsigned char rotate(unsigned char c, int count);
 unsigned char changebit(unsigned char c, int bit, int to);
 int bits(unsigned char c);
+void shuffleKey(unsigned char *key, int len);
 
 int main(int argc, char *argv[])
 {
-	/* Start Testing: TEMP */
-	unsigned char c = '"';
-	printf("The binary representation of %c is: ", c);
-	printbin(c);
-	printf("\nThere are %d one bits in %c\n", bits(c), c);
-	int shift = 5;
-	printf("Rotating %c by %d yields: ", c, shift);
-	printbin(rotate(c, shift));
-	printf("\n");
-	/* End Testing */
+	unsigned char message[MESSAGE_LENGTH]; 
+	unsigned char key[MESSAGE_LENGTH];
 
-	char message[MESSAGE_LENGTH]; 
+	/* Read message */
+	int c;
+	int messageLength = 0;
+	while ((c = getchar()) != 255) {
+		/* if we have not read more than the maximum message length */
+		if (messageLength < MESSAGE_LENGTH) {
+			message[messageLength] = c;
+			messageLength++;
+		}
+	}
+
+	/* Read key */
+	int keyLength = 0;
+	while((c = getchar()) != EOF ) {
+		/* if we have not read more than the maximum message length */
+		if (keyLength < MESSAGE_LENGTH) {
+			key[keyLength] = c;
+			keyLength++;
+		}
+	}
 
 	return 0;
 }
@@ -112,7 +124,19 @@ int bits(unsigned char c)
 	return sum;
 }
 
+void shuffleKey(unsigned char key[], int len)
+{
+	int sum = key[len-1] % len;
+	unsigned char prev = key[len-1];
 
+	for (int i = 0; i < len; ++i) {
+		key[i] = rotate(key[i] ^ key[sum], bits(prev));
+		sum = (sum + key[i]) % len;
+		prev = key[i];
+	}
+	
+	return;
+}
 
 
 
