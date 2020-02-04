@@ -9,16 +9,17 @@
  ************************************************************************/
 
 #include <stdio.h>
+#define MESSAGE_LENGTH 2048
 
-void printbin(char c);
-char rotate(char c, int count);
-char changebit(char c, char bit, char to);
-int bits(char c);
+void printbin(unsigned char c);
+unsigned char rotate(unsigned char c, int count);
+unsigned char changebit(unsigned char c, int bit, int to);
+int bits(unsigned char c);
 
 int main(int argc, char *argv[])
 {
 	/* Start Testing: TEMP */
-	char c = '~';
+	unsigned char c = '"';
 	printf("The binary representation of %c is: ", c);
 	printbin(c);
 	printf("\nThere are %d one bits in %c\n", bits(c), c);
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 	/* End Testing */
 
+	char message[MESSAGE_LENGTH]; 
 
 	return 0;
 }
@@ -35,10 +37,10 @@ int main(int argc, char *argv[])
 /*  Description: Print the binary representation of n.
 	
 	Parameters:  c - Character to be printed.        */
-void printbin(char c)
+void printbin(unsigned char c)
 {
 	size_t csize = sizeof(c) * 8; /* size of c in bits */
-	char mask = 1 << (csize - 1);
+	unsigned char mask = 1 << (csize - 1);
 
 	for (int i = 0; i < csize; ++i) {
 		if ((c & mask) == 0) {
@@ -56,11 +58,11 @@ void printbin(char c)
 	Parameters: c - Character to be rotated.
 				count - number of rotations to be performed.
 	Retuns: The rotated c                                          */
-char rotate(char c, int count)
+unsigned char rotate(unsigned char c, int count)
 {
 	int cbits = sizeof(c) * 8; /* size of c in bits */
-	char high = c & (1 << (cbits -1)); /* capture the highest order bit */
-	char low; /* capture the least significant bit */
+	unsigned char high = c & (1 << (cbits -1)); /* capture the highest order bit */
+	unsigned char low; /* capture the least significant bit */
 	
 	/* perform count rotation operations */
 	for (int i = 0; i < count; ++i) {
@@ -75,12 +77,12 @@ char rotate(char c, int count)
 
 /*  Description: Change the a bit in c. 
    
-	Parameters: bit - The index (from zero) to change in c. 
+	Parameters: c   - Character to change.
+				bit - The index (from zero) to change in c. 
 				to  - What to change the bit to (1 or 0) 
-				c   - Character to change.
-
+				
 	Returns: Modified c									  */
-char changebit(char c, char bit, char to)
+unsigned char changebit(unsigned char c, int bit, int to)
 {
 	if (to) {
 		/* set the bit */
@@ -98,7 +100,7 @@ char changebit(char c, char bit, char to)
 	Parameters: c - Character to count bits in.
 	
 	Retunrs: Sum of 1 bits in c.					 */
-int bits(char c)
+int bits(unsigned char c)
 {
 	int sum;
 	/* For each bit in c, add it to sum */
