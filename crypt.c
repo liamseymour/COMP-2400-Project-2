@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
 	int i = 0;
 	int j = 0;
 
-	printf("please enter the message you'd like to encrypt: \n");
 	while ((message = getchar()) != DELIMITER)
 	{
 		messageArray[i] = message;
@@ -37,7 +36,6 @@ int main(int argc, char *argv[])
 		messageLen++;
 	}
 
-printf("please enter the key you'd like to encrypt your message with: \n");
 	while ((key = getchar()) != EOF)
 	{
 		keyArray[keyLen] = key;
@@ -51,7 +49,7 @@ printf("please enter the key you'd like to encrypt your message with: \n");
 		keyArray[keyLen+j] = keyArray[j];
 	}
 
-	shuffleKey(key, keyLength);
+	shuffleKey(keyArray, keyLen);
 
 	return 0;
 }
