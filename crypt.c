@@ -25,23 +25,19 @@ int main(int argc, char *argv[])
 	/* Read message */
 	int c;
 	int messageLength = 0;
-	while ((c = getchar()) != 255) {
-		/* if we have not read more than the maximum message length */
-		if (messageLength < MESSAGE_LENGTH) {
-			message[messageLength] = c;
-			messageLength++;
-		}
+	while ((c = getchar()) != 255 && messageLength < MESSAGE_LENGTH) {
+		message[messageLength] = c;
+		messageLength++;
 	}
 
 	/* Read key */
 	int keyLength = 0;
-	while((c = getchar()) != EOF ) {
-		/* if we have not read more than the maximum message length */
-		if (keyLength < MESSAGE_LENGTH) {
-			key[keyLength] = c;
-			keyLength++;
-		}
+	while((c = getchar()) != EOF && keyLength < MESSAGE_LENGTH) {
+		key[keyLength] = c;
+		keyLength++;
 	}
+
+	shuffleKey(key, keyLength);
 
 	return 0;
 }
@@ -72,18 +68,18 @@ void printbin(unsigned char c)
 	Retuns: The rotated c                                          */
 unsigned char rotate(unsigned char c, int count)
 {
-	int cbits = sizeof(c) * 8; /* size of c in bits */
-	unsigned char high = c & (1 << (cbits -1)); /* capture the highest order bit */
+	int csize = sizeof(c) * 8; /* size of c in bits */
+	unsigned char high = c & (1 << (csize -1)); /* capture the highest order bit */
 	unsigned char low; /* capture the least significant bit */
 	
 	/* perform count rotation operations */
 	for (int i = 0; i < count; ++i) {
 		low = c & 1; 
 		c >>= 1;
-		c = changebit(c, cbits - 2, low);
+		c = changebit(c, csize - 2, low);
 	}
 	/* Set the highest bit back */
-	c = changebit(c, cbits - 1, high);
+	c = changebit(c, csize - 1, high);
 	return c;
 }
 
@@ -124,6 +120,11 @@ int bits(unsigned char c)
 	return sum;
 }
 
+/*  Description: Psuedo Randomizes a key used for 
+    		 	 encrypting a message.
+ 	
+	Parameters:  key - Key string to shuffle.
+				 len - Length of the key.          */
 void shuffleKey(unsigned char key[], int len)
 {
 	int sum = key[len-1] % len;
