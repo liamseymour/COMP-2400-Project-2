@@ -29,27 +29,29 @@ int main(int argc, char *argv[])
 	int i = 0;
 	int j = 0;
 
-	while ((message = getchar()) != DELIMITER)
-	{
+	while ((message = getchar()) != DELIMITER) {
 		messageArray[i] = message;
 		i++;
 		messageLen++;
 	}
 
-	while ((key = getchar()) != EOF)
-	{
+	while ((key = getchar()) != EOF) {
 		keyArray[keyLen] = key;
 
 		keyLen++;
 	}
 
 
-	for (j = 0; j < messageLen - keyLen; j++)
-	{
+	for (j = 0; j < messageLen - keyLen; j++) {
 		keyArray[keyLen+j] = keyArray[j];
 	}
 
 	shuffleKey(keyArray, keyLen);
+
+	for (i = 0; i < messageLen; ++i) {
+		putchar(keyArray[i] ^ messageArray[i]);
+	}	
+
 
 	return 0;
 }
