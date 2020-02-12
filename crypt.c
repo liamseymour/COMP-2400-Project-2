@@ -9,10 +9,10 @@
  ************************************************************************/
 
 #include <stdio.h>
+
 #define MESSAGE_LENGTH 2048
 #define DELIMITER 255
 
-void printbin(unsigned char c); // TEMP
 unsigned char rotate(unsigned char c, int count);
 unsigned char changebit(unsigned char c, int bit, int to);
 int bits(unsigned char c);
@@ -20,59 +20,41 @@ void shuffleKey(unsigned char *key, int len);
 
 int main(int argc, char *argv[])
 {
+
+	/* Read in message until delimiter is found, ignore
+	 * chars after message length */
 	int message;
-	int key;
-	unsigned char messageArray[MESSAGE_LENGTH];
-	unsigned char keyArray[MESSAGE_LENGTH];
 	int messageLen = 0;
+	unsigned char messageArray[MESSAGE_LENGTH];
+	while ((message = getchar()) != DELIMITER ) {
+		if (messageLen < MESSAGE_LENGTH) {
+			messageArray[messageLen++]= message;
+		}
+	}
+
+	/* Read in key until EOF */
+	int key;
 	int keyLen = 0;
-	int i = 0;
-	int j = 0;
-
-	while ((message = getchar()) != DELIMITER) {
-		messageArray[i] = message;
-		i++;
-		messageLen++;
+	unsigned char keyArray[MESSAGE_LENGTH];
+	while ((key = getchar()) != EOF && keyLen < MESSAGE_LENGTH) {
+		if (keyLen < MESSAGE_LENGTH) {
+			keyArray[keyLen++] = key;
+		}
 	}
 
-	while ((key = getchar()) != EOF) {
-		keyArray[keyLen] = key;
-
-		keyLen++;
-	}
-
-
-	for (j = 0; j < messageLen - keyLen; j++) {
+	/* repeat the key until it is long enough for the message */
+	for (int j = 0; j < messageLen - keyLen; j++) {
 		keyArray[keyLen+j] = keyArray[j];
 	}
 
 	shuffleKey(keyArray, keyLen);
 
-	for (i = 0; i < messageLen; ++i) {
+	/* output the encrypted message */
+	for (int i = 0; i < messageLen; ++i) {
 		putchar(keyArray[i] ^ messageArray[i]);
 	}	
 
-
 	return 0;
-}
-
-/*  Description: Print the binary representation of n.
-
-	Parameters:  c - Character to be printed.        */
-void printbin(unsigned char c)
-{
-	size_t csize = sizeof(c) * 8; /* size of c in bits */
-	unsigned char mask = 1 << (csize - 1);
-
-	for (int i = 0; i < csize; ++i) {
-		if ((c & mask) == 0) {
-			putchar('0');
-		} else {
-			putchar('1');
-		}
-		c <<= 1;
-	}
-//	putchar('\n');
 }
 
 /*  Description: Rotates the lower-order bits to the right by count.
