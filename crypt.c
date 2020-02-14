@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	int key;
 	int keyLen = 0;
 	unsigned char keyArray[MESSAGE_LENGTH];
-	while ((key = getchar()) != EOF && keyLen < MESSAGE_LENGTH) {
+	while ((key = getchar()) != EOF ) {
 		if (keyLen < MESSAGE_LENGTH) {
 			keyArray[keyLen++] = key;
 		}
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 		keyArray[keyLen+j] = keyArray[j];
 	}
 
-	shuffleKey(keyArray, keyLen);
+	shuffleKey(keyArray, messageLen);
 
 	/* output the encrypted message */
 	for (int i = 0; i < messageLen; ++i) {
